@@ -7,7 +7,7 @@ from typing import *
 from classes import *
 import pandas as pd
 
-from YaPar_reader.SLR_simulater import SLR_simulate
+from SLR_simulater import SLR_simulate
 
 
 # Create a class named YpReader
@@ -48,6 +48,8 @@ class YpReader:
         self.tokens: Dict[str, GrammarElement] = {}
         self.productions: Dict[Production, Production] = {}
         self.LR0States: Dict[LRO_State, LRO_State] = {}
+        self.SLR = None
+        self.initLR0 = None
 
     def analyzeContent(self):
         # Define the parts of the Yapar language
@@ -94,7 +96,7 @@ class YpReader:
                 prod = message[1].replace(';', '').strip()
                 temPrs[prodName] = prod
 
-        self.tokens['$'] = GrammarElement('$')
+        self.tokens['$'] = GrammarElement('$', isTerminal=True)
         self.tokens[initProd + '\''] = GrammarElement(initProd + '\'')
         initProduction = Production(self.tokens[initProd + '\''], [self.tokens[initProd], self.tokens['$']], 1)
         self.productions[initProduction] = initProduction
@@ -122,6 +124,8 @@ class YpReader:
 
                 self.tokens[prName].addProduction(newProd)
 
+        self.calcs()
+
         initLR0 = LRO_State(initProduction.closure(), 0)
         self.LR0States[initLR0] = initLR0
         countLR0 = 1
@@ -141,8 +145,9 @@ class YpReader:
                     toEval.append(newLR0State)
 
                 lr0.addTransition(symbol, newLR0State)
-        drawDiagramAndSave(initLR0, False)
-        drawDiagramAndSave(initLR0, True)
+
+        self.initLR0 = initLR0
+
 
     def calcs(self):
         for tk in self.tokens.values():
@@ -155,11 +160,13 @@ class YpReader:
         print('-------------------')
 
     def createSLRTable(self):
-        slrTable = pd.DataFrame(columns=[x.value for x in self.tokens.values()], index=[x.number for x in self.LR0States.values()])
+        slrTable = pd.DataFrame(columns=[x.value for x in self.tokens.values()],
+                                index=[x.number for x in self.LR0States.values()])
         toPrintTable = slrTable.copy()
         for pr in self.productions.values():
-            print(pr.number,'. ',str(pr))
+            print(pr.number, '. ', str(pr))
         for state in self.LR0States.values():
+
             for symbol, nextState in state.transitions.items():
                 if symbol.isTerminal:
                     if symbol.value == '$':
@@ -170,25 +177,40 @@ class YpReader:
                     if pd.isna(slrTable.loc[state.number, symbol.value]):
                         slrTable.loc[state.number, symbol.value] = []
                         toPrintTable.loc[state.number, symbol.value] = ' '
-                    slrTable.loc[state.number, symbol.value].append(('S', nextState.number))
+                    slrTable.loc[state.number, symbol.value] = ('S', nextState.number)
                     toPrintTable.loc[state.number, symbol.value] += f'S{nextState.number} '
                 else:
                     slrTable.loc[state.number, symbol.value] = ('G', nextState.number)
                     toPrintTable.loc[state.number, symbol.value] = f'G{nextState.number}'
             for pr in state.itemsPointNone:
                 for symbol in pr.fromNonTerminal.follow:
-                    if pd.isna(slrTable.loc[state.number, symbol.value]):
-                        slrTable.loc[state.number, symbol.value] = []
-                        toPrintTable.loc[state.number, symbol.value] = ' '
-                    slrTable.loc[state.number, symbol.value].append( ('R', pr.fromNonTerminal.value, len(pr.toResult)))
-                    toPrintTable.loc[state.number, symbol.value] += f'R{pr.number} {pr.fromNonTerminal.value}{len(pr.toResult)} '
+                    slrTable.loc[state.number, symbol.value] = ('R', (pr.fromNonTerminal.value, len(pr.toResult)))
+                    toPrintTable.loc[
+                        state.number, symbol.value] = f'R{pr.number} {pr.fromNonTerminal.value}{len(pr.toResult)} '
+
+            for item in state.itemsPointTerminal:
+                if item.pointElement().value == '$':
+                    slrTable.loc[state.number, item.pointElement().value] = ('A', 0)
+                    toPrintTable.loc[state.number, item.pointElement().value] = 'A'
+                    continue
 
         print(toPrintTable)
         print(tabulate.tabulate(toPrintTable, headers='keys', tablefmt='psql'))
 
+        self.SLR = SLR_Table(slrTable, toPrintTable, {x.value for x in self.tokens.values()}, 0,
+                             {x.value for x in self.tokens.values() if x.forIgnore})
+
+    def simulate(self, content: str):
+        cont = ''
+        with open(content, 'r') as file:
+            cont = file.read()
+        SLR_simulate(cont, self.SLR)
+
 
 if __name__ == '__main__':
-    reader = YpReader('../examples/yalex.yalp')
+    reader = YpReader('../examples/slr-1.yalp')
     reader.analyzeContent()
-    reader.calcs()
     reader.createSLRTable()
+    reader.simulate('../out/tokens.txt')
+    drawDiagramAndSave(reader.initLR0, True)
+    drawDiagramAndSave(reader.initLR0, False)

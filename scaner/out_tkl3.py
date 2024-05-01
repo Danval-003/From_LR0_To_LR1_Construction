@@ -47,35 +47,11 @@ class State:
 
 
 
-f1 = State('f1')
-e1 = State('e1')
-d1 = State('d1')
-c1 = State('c1')
-b6 = State('b6')
-b1 = State('b1')
-b5 = State('b5')
-b2 = State('b2')
-b3 = State('b3')
-b4 = State('b4')
 a1 = State('a1')
 a0 = State('a0')
 a0.add_transition(32, a1)
 a0.add_transition(9, a1)
 a0.add_transition(10, a1)
-a0.add_transition(48, b4)
-a0.add_transition(49, b4)
-a0.add_transition(50, b4)
-a0.add_transition(51, b4)
-a0.add_transition(52, b4)
-a0.add_transition(53, b4)
-a0.add_transition(54, b4)
-a0.add_transition(55, b4)
-a0.add_transition(56, b4)
-a0.add_transition(57, b4)
-a0.add_transition(43, c1)
-a0.add_transition(42, d1)
-a0.add_transition(40, e1)
-a0.add_transition(41, f1)
 
 a1.isFinalState = True
 
@@ -90,151 +66,6 @@ a1.token = tk_a1
 a1.add_transition(32, a1)
 a1.add_transition(9, a1)
 a1.add_transition(10, a1)
-
-b4.isFinalState = True
-
-
-def tk_b4(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("NUMBER ")
-
-
-b4.token = tk_b4
-b4.add_transition(69, b3)
-b4.add_transition(46, b1)
-b4.add_transition(48, b4)
-b4.add_transition(49, b4)
-b4.add_transition(50, b4)
-b4.add_transition(51, b4)
-b4.add_transition(52, b4)
-b4.add_transition(53, b4)
-b4.add_transition(54, b4)
-b4.add_transition(55, b4)
-b4.add_transition(56, b4)
-b4.add_transition(57, b4)
-
-b3.add_transition(43, b2)
-b3.add_transition(45, b2)
-b3.add_transition(48, b5)
-b3.add_transition(49, b5)
-b3.add_transition(50, b5)
-b3.add_transition(51, b5)
-b3.add_transition(52, b5)
-b3.add_transition(53, b5)
-b3.add_transition(54, b5)
-b3.add_transition(55, b5)
-b3.add_transition(56, b5)
-b3.add_transition(57, b5)
-
-b2.add_transition(48, b5)
-b2.add_transition(49, b5)
-b2.add_transition(50, b5)
-b2.add_transition(51, b5)
-b2.add_transition(52, b5)
-b2.add_transition(53, b5)
-b2.add_transition(54, b5)
-b2.add_transition(55, b5)
-b2.add_transition(56, b5)
-b2.add_transition(57, b5)
-
-b5.isFinalState = True
-
-
-def tk_b5(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("NUMBER ")
-
-
-b5.token = tk_b5
-b5.add_transition(48, b5)
-b5.add_transition(49, b5)
-b5.add_transition(50, b5)
-b5.add_transition(51, b5)
-b5.add_transition(52, b5)
-b5.add_transition(53, b5)
-b5.add_transition(54, b5)
-b5.add_transition(55, b5)
-b5.add_transition(56, b5)
-b5.add_transition(57, b5)
-
-b1.add_transition(48, b6)
-b1.add_transition(49, b6)
-b1.add_transition(50, b6)
-b1.add_transition(51, b6)
-b1.add_transition(52, b6)
-b1.add_transition(53, b6)
-b1.add_transition(54, b6)
-b1.add_transition(55, b6)
-b1.add_transition(56, b6)
-b1.add_transition(57, b6)
-
-b6.isFinalState = True
-
-
-def tk_b6(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("NUMBER ")
-
-
-b6.token = tk_b6
-b6.add_transition(69, b3)
-b6.add_transition(48, b6)
-b6.add_transition(49, b6)
-b6.add_transition(50, b6)
-b6.add_transition(51, b6)
-b6.add_transition(52, b6)
-b6.add_transition(53, b6)
-b6.add_transition(54, b6)
-b6.add_transition(55, b6)
-b6.add_transition(56, b6)
-b6.add_transition(57, b6)
-
-c1.isFinalState = True
-
-
-def tk_c1(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("PLUS ")
-
-
-c1.token = tk_c1
-
-d1.isFinalState = True
-
-
-def tk_d1(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("TIMES ")
-
-
-d1.token = tk_d1
-
-e1.isFinalState = True
-
-
-def tk_e1(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("LPAREN ")
-
-
-e1.token = tk_e1
-
-f1.isFinalState = True
-
-
-def tk_f1(): 
-	with open(fileOut, 'a') as archivo:
-	    # Escribe datos en el archivo
-	    archivo.write("RPAREN ")
-
-
-f1.token = tk_f1
 
 
 args = parser.parse_args()

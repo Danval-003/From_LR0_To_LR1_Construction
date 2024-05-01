@@ -1,4 +1,6 @@
 from typing import List, Dict, Set, Tuple
+import pandas as pd
+import tabulate
 
 
 class GrammarElement:
@@ -55,17 +57,21 @@ class Production:
     def __init__(self, fromNonTerminal: 'GrammarElement',
                  toResult: List['GrammarElement'] or Tuple['GrammarElement'] or Set['GrammarElement'],
                  number: int,
-                 point: int = 0):
+                 point: int = 0,
+                 a=None):
+        if a is None:
+            a = []
         self.fromNonTerminal: GrammarElement = fromNonTerminal
         self.toResult: Tuple['GrammarElement'] = tuple(toResult)
         self.number: int = number
         self.point: int = point
         self.calcFollow()
+        self.alpha: Tuple['GrammarElement',...] = tuple(sorted(a))
 
     def passPoint(self, symbol: GrammarElement):
         if self.point < len(self.toResult):
             if self.toResult[self.point] == symbol:
-                return Production(self.fromNonTerminal, self.toResult, self.number, self.point + 1)
+                return Production(self.fromNonTerminal, self.toResult, self.number, self.point + 1, a=self.alpha)
         return None
 
     def pointElement(self):
@@ -73,8 +79,21 @@ class Production:
             return self.toResult[self.point]
         return None
 
+    def nextPointElement(self):
+        if self.point + 1 < len(self.toResult):
+            return self.toResult[self.point + 1]
+        return None
+
     def closure(self):
         closureSet = {self}
+        nexPoint = self.nextPointElement()
+        b = []
+        if nexPoint is None:
+            b = self.alpha
+        elif not nexPoint.isTerminal:
+            b += nexPoint.first
+        elif nexPoint:
+            b = [nexPoint]
 
         while True:
             temClosure = set()
@@ -82,7 +101,7 @@ class Production:
                 pointElement = pr.pointElement()
                 if pointElement and not pointElement.isTerminal:
                     for pr2 in pointElement.productions:
-                        newPr = Production(pr2.fromNonTerminal, pr2.toResult, pr2.number)
+                        newPr = Production(pr2.fromNonTerminal, pr2.toResult, pr2.number, a=list(b))
                         if newPr not in closureSet:
                             temClosure.add(newPr)
             if len(temClosure) > 0:
@@ -119,16 +138,16 @@ class Production:
 
     def __eq__(self, other):
         if isinstance(other, Production):
-            return ((self.fromNonTerminal, self.toResult, self.point) ==
-                    (other.fromNonTerminal, other.toResult, other.point))
+            return ((self.fromNonTerminal, self.toResult, self.point, self.alpha) ==
+                    (other.fromNonTerminal, other.toResult, other.point, other.alpha))
         return False
 
     def __hash__(self):
-        return hash((self.fromNonTerminal, self.toResult, self.point))
+        return hash((self.fromNonTerminal, self.toResult, self.point, self.alpha))
 
     def __str__(self):
         return (f"{self.fromNonTerminal} -> "
-                f"{' '.join([str(x) for x in self.toResult[:self.point] + ('.',) + self.toResult[self.point:]])}")
+                f"{' '.join([str(x) for x in self.toResult[:self.point] + ('.',) + self.toResult[self.point:]])}, {' '.join([str(x) for x in self.alpha])}")
 
 
 class LRO_State:
@@ -182,3 +201,27 @@ class LRO_State:
 
     def __str__(self):
         return f"State {self.number}\n" + '\n'.join([str(x) for x in self.items])
+
+
+class SLR_Table:
+    def __init__(self, table: pd.DataFrame, tablePrint: pd.DataFrame, tokens: Set[str],
+                 FirstState: int, tokensToIgnore: Set[str], product_list_toPrint: str = '') -> None:
+        self.table: pd.DataFrame = table
+        self.tablePrint: pd.DataFrame = tablePrint
+        self.tokens: Set[str] = tokens
+        self.firstState: int = FirstState
+        self.tokensToIgnore: Set[str] = tokensToIgnore
+        self.product_list_toPrint: str = product_list_toPrint
+
+    def obtainAction(self, state, symbol):
+        return self.table.at[state, str(symbol)], self.tablePrint.at[state, str(symbol)]
+
+    def obtainGrammarElement(self, value):
+        if value in self.tokens:
+            if value in self.tokensToIgnore:
+                return 2
+            return 0
+        return 1
+
+    def __str__(self):
+        return tabulate.tabulate(self.tablePrint, headers='keys', tablefmt='psql')

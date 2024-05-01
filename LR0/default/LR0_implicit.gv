@@ -11,9 +11,6 @@ factor -> . LPAREN expression RPAREN
 term -> . factor
 term -> . term TIMES factor" shape=circle]
 	1 [label="1
-term -> factor ." shape=circle]
-	0 -> 1 [label=factor]
-	2 [label="2
 expression -> term .
 term -> term . TIMES factor" shape=circle]
 	6 [label="6
@@ -26,48 +23,51 @@ term -> term TIMES factor ." shape=circle]
 	3 [label="3
 factor -> ID ." shape=circle]
 	6 -> 3 [label=ID]
-	5 [label="5
+	4 [label="4
 expression -> . term
 expression -> . expression PLUS term
 factor -> . ID
-factor -> LPAREN . expression RPAREN
 factor -> . LPAREN expression RPAREN
+factor -> LPAREN . expression RPAREN
 term -> . factor
 term -> . term TIMES factor" shape=circle]
-	5 -> 1 [label=factor]
-	5 -> 2 [label=term]
-	5 -> 3 [label=ID]
-	8 [label="8
+	4 -> 1 [label=term]
+	2 [label="2
+term -> factor ." shape=circle]
+	4 -> 2 [label=factor]
+	4 -> 3 [label=ID]
+	4 -> 4 [label=LPAREN]
+	7 [label="7
 expression -> expression . PLUS term
 factor -> LPAREN expression . RPAREN" shape=circle]
-	11 [label="11
-factor -> LPAREN expression RPAREN ." shape=circle]
-	8 -> 11 [label=RPAREN]
-	7 [label="7
+	8 [label="8
 expression -> expression PLUS . term
 factor -> . ID
 factor -> . LPAREN expression RPAREN
 term -> . factor
 term -> . term TIMES factor" shape=circle]
-	7 -> 1 [label=factor]
-	10 [label="10
+	11 [label="11
 expression -> expression PLUS term .
 term -> term . TIMES factor" shape=circle]
-	10 -> 6 [label=TIMES]
-	7 -> 10 [label=term]
-	7 -> 3 [label=ID]
-	7 -> 5 [label=LPAREN]
-	8 -> 7 [label=PLUS]
-	5 -> 8 [label=expression]
-	5 -> 5 [label=LPAREN]
-	6 -> 5 [label=LPAREN]
-	2 -> 6 [label=TIMES]
-	0 -> 2 [label=term]
+	11 -> 6 [label=TIMES]
+	8 -> 11 [label=term]
+	8 -> 2 [label=factor]
+	8 -> 3 [label=ID]
+	8 -> 4 [label=LPAREN]
+	7 -> 8 [label=PLUS]
+	10 [label="10
+factor -> LPAREN expression RPAREN ." shape=circle]
+	7 -> 10 [label=RPAREN]
+	4 -> 7 [label=expression]
+	6 -> 4 [label=LPAREN]
+	1 -> 6 [label=TIMES]
+	0 -> 1 [label=term]
+	0 -> 2 [label=factor]
 	0 -> 3 [label=ID]
-	4 [label="4
+	0 -> 4 [label=LPAREN]
+	5 [label="5
 expression -> expression . PLUS term
 expression' -> expression . $" shape=doublecircle]
-	4 -> 7 [label=PLUS]
-	0 -> 4 [label=expression]
-	0 -> 5 [label=LPAREN]
+	5 -> 8 [label=PLUS]
+	0 -> 5 [label=expression]
 }

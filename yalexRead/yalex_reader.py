@@ -376,6 +376,9 @@ def Eval_tokens(token):
 
         new_eval.append((comp, type))
 
+    if regexDescription[0] =='|':
+        regexDescription = regexDescription[1:]
+
     tk[tokenName.strip()] = [regexDescription]
     total_machines[lastMachine].update(tk)
 
@@ -398,6 +401,8 @@ def create_mach(draws_machine=True, defect_file:str = ''):
     codes = []
 
     for machine in total_machines:
+        for pr in total_machines[machine]:
+            print(pr, total_machines[machine][pr])
         mach = prepareAFN(total_machines[machine], draws_machine)
         code += translateToCode(mach, True, headerC)
         fileName = "./scaner/out_" + str(machine) + ".py" if defect_file == '' else defect_file
