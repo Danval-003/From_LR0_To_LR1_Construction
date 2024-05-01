@@ -23,7 +23,7 @@ rule tokens =
     ws        {
 with open(fileOut, 'a') as archivo:
     # Escribe datos en el archivo
-    archivo.write("WS ")
+    archivo.write("WHITESPACE ")
 }        (* Cambie por una acción válida, que devuelva el token *)
   | id        {
 with open(fileOut, 'a') as archivo:

@@ -270,8 +270,8 @@ def statesTotla(initState: State) -> str:
     return code
 
 
-def import_module(file, regex, showTree=False):
-    file = './machines/' + file
+def import_module(file, regex, showTree=False, directory='./machines/'):
+    file = directory + file
     if os.path.isfile(file):
         import_module = file.split('.')[0]
         spec = importlib.util.spec_from_file_location(import_module, file)

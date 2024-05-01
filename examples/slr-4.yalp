@@ -50,7 +50,6 @@ t:
 q:
     SEMICOLON m q
   | SEMICOLON m
-  | SEMICOLON
 ;
 m:
     a

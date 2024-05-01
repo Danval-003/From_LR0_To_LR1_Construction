@@ -1,0 +1,77 @@
+/* Configuración del parser para Gramática No.1 */
+/* Sigue la gramática SLR: */
+/*  */
+
+%token COMMENTINIT COMMENTEND
+%token TK PR
+%token TKDECLARE EXPRESSION
+%token WHITESPACE OR DOUBLEDOT END SEPARATOR
+IGNORE WHITESPACE
+
+
+ypf:
+ tkp SEPARATOR prp
+| comm tkp prp
+;
+
+comm:
+ comm comment
+| comment
+;
+
+comment:
+ COMMENTINIT all COMMENTEND
+;
+
+all:
+ all a
+ | a
+;
+
+a:
+    EXPRESSION
+    | TKDECLARE
+    | TK
+    | PR
+    | OR
+    | DOUBLEDOT
+    | END
+;
+
+tkp:
+ tkp tk
+| tk
+;
+
+tk:
+ TKDECLARE tks
+;
+
+tks:
+ tks TK
+ | TK
+;
+
+prp:
+ prp pr
+;
+
+pr:
+ PR DOUBLEDOT content END
+;
+
+content:
+  content OR cpd
+ | cpd
+;
+
+cpd:
+  cpd PR
+ | PR
+ | cpd TK
+ | TK
+;
+
+
+
+

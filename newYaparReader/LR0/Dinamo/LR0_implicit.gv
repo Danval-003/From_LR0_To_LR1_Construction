@@ -1,0 +1,205 @@
+// LR0
+digraph {
+	rankdir=LR
+	label=Hola
+	0 [label="State 0
+file' -> . file $
+file -> . otp
+otp -> . otp otherpart
+otp -> . otherpart
+otherpart -> . rule
+otherpart -> . comment
+otherpart -> . ASSIGMENT
+comment -> . COM com ENDCOM
+comment -> . COM ENDCOM
+rule -> . rule ruled
+rule -> . RULE EXPRESSION LCURLY hp RCURLY
+rule -> . RULE EXPRESSION" shape=circle]
+	1 [label="State 1
+otherpart -> ASSIGMENT ." shape=circle]
+	0 -> 1 [label=ASSIGMENT]
+	2 [label="State 2
+rule -> RULE . EXPRESSION LCURLY hp RCURLY
+rule -> RULE . EXPRESSION" shape=circle]
+	9 [label="State 9
+rule -> RULE EXPRESSION . LCURLY hp RCURLY
+rule -> RULE EXPRESSION ." shape=circle]
+	22 [label="State 22
+hp -> . hp headpart
+hp -> . headpart
+headpart -> . EXPRESSION
+headpart -> . ASSIGMENT
+headpart -> . RULE
+headpart -> . OR
+rule -> RULE EXPRESSION LCURLY . hp RCURLY" shape=circle]
+	26 [label="State 26
+headpart -> EXPRESSION ." shape=circle]
+	22 -> 26 [label=EXPRESSION]
+	27 [label="State 27
+headpart -> ASSIGMENT ." shape=circle]
+	22 -> 27 [label=ASSIGMENT]
+	28 [label="State 28
+headpart -> RULE ." shape=circle]
+	22 -> 28 [label=RULE]
+	29 [label="State 29
+headpart -> OR ." shape=circle]
+	22 -> 29 [label=OR]
+	30 [label="State 30
+hp -> hp . headpart
+headpart -> . EXPRESSION
+headpart -> . ASSIGMENT
+headpart -> . RULE
+headpart -> . OR
+rule -> RULE EXPRESSION LCURLY hp . RCURLY" shape=circle]
+	33 [label="State 33
+rule -> RULE EXPRESSION LCURLY hp RCURLY ." shape=circle]
+	30 -> 33 [label=RCURLY]
+	30 -> 26 [label=EXPRESSION]
+	30 -> 27 [label=ASSIGMENT]
+	30 -> 28 [label=RULE]
+	30 -> 29 [label=OR]
+	34 [label="State 34
+hp -> hp headpart ." shape=circle]
+	30 -> 34 [label=headpart]
+	22 -> 30 [label=hp]
+	31 [label="State 31
+hp -> headpart ." shape=circle]
+	22 -> 31 [label=headpart]
+	9 -> 22 [label=LCURLY]
+	2 -> 9 [label=EXPRESSION]
+	0 -> 2 [label=RULE]
+	3 [label="State 3
+comment -> COM . com ENDCOM
+comment -> COM . ENDCOM
+com -> . com comm
+com -> . comm
+comm -> . EXPRESSION
+comm -> . ASSIGMENT
+comm -> . RULE
+comm -> . OR
+comm -> . RCURLY
+comm -> . LCURLY" shape=circle]
+	10 [label="State 10
+comm -> RCURLY ." shape=circle]
+	3 -> 10 [label=RCURLY]
+	11 [label="State 11
+comm -> LCURLY ." shape=circle]
+	3 -> 11 [label=LCURLY]
+	12 [label="State 12
+comm -> EXPRESSION ." shape=circle]
+	3 -> 12 [label=EXPRESSION]
+	13 [label="State 13
+comm -> ASSIGMENT ." shape=circle]
+	3 -> 13 [label=ASSIGMENT]
+	14 [label="State 14
+comm -> RULE ." shape=circle]
+	3 -> 14 [label=RULE]
+	15 [label="State 15
+comm -> OR ." shape=circle]
+	3 -> 15 [label=OR]
+	16 [label="State 16
+comment -> COM ENDCOM ." shape=circle]
+	3 -> 16 [label=ENDCOM]
+	17 [label="State 17
+comment -> COM com . ENDCOM
+com -> com . comm
+comm -> . EXPRESSION
+comm -> . ASSIGMENT
+comm -> . RULE
+comm -> . OR
+comm -> . RCURLY
+comm -> . LCURLY" shape=circle]
+	17 -> 10 [label=RCURLY]
+	17 -> 11 [label=LCURLY]
+	17 -> 12 [label=EXPRESSION]
+	17 -> 13 [label=ASSIGMENT]
+	17 -> 14 [label=RULE]
+	17 -> 15 [label=OR]
+	23 [label="State 23
+comment -> COM com ENDCOM ." shape=circle]
+	17 -> 23 [label=ENDCOM]
+	24 [label="State 24
+com -> com comm ." shape=circle]
+	17 -> 24 [label=comm]
+	3 -> 17 [label=com]
+	18 [label="State 18
+com -> comm ." shape=circle]
+	3 -> 18 [label=comm]
+	0 -> 3 [label=COM]
+	4 [label="State 4
+file' -> file . $" shape=doublecircle]
+	0 -> 4 [label=file]
+	5 [label="State 5
+file -> otp .
+otp -> otp . otherpart
+otherpart -> . rule
+otherpart -> . comment
+otherpart -> . ASSIGMENT
+comment -> . COM com ENDCOM
+comment -> . COM ENDCOM
+rule -> . rule ruled
+rule -> . RULE EXPRESSION LCURLY hp RCURLY
+rule -> . RULE EXPRESSION" shape=circle]
+	5 -> 1 [label=ASSIGMENT]
+	5 -> 2 [label=RULE]
+	5 -> 3 [label=COM]
+	19 [label="State 19
+otp -> otp otherpart ." shape=circle]
+	5 -> 19 [label=otherpart]
+	7 [label="State 7
+otherpart -> comment ." shape=circle]
+	5 -> 7 [label=comment]
+	8 [label="State 8
+otherpart -> rule .
+rule -> rule . ruled
+ruled -> . OR EXPRESSION
+ruled -> . OR EXPRESSION LCURLY hp RCURLY" shape=circle]
+	20 [label="State 20
+ruled -> OR . EXPRESSION
+ruled -> OR . EXPRESSION LCURLY hp RCURLY" shape=circle]
+	25 [label="State 25
+ruled -> OR EXPRESSION .
+ruled -> OR EXPRESSION . LCURLY hp RCURLY" shape=circle]
+	32 [label="State 32
+hp -> . hp headpart
+hp -> . headpart
+headpart -> . EXPRESSION
+headpart -> . ASSIGMENT
+headpart -> . RULE
+headpart -> . OR
+ruled -> OR EXPRESSION LCURLY . hp RCURLY" shape=circle]
+	32 -> 26 [label=EXPRESSION]
+	32 -> 27 [label=ASSIGMENT]
+	32 -> 28 [label=RULE]
+	32 -> 29 [label=OR]
+	35 [label="State 35
+hp -> hp . headpart
+headpart -> . EXPRESSION
+headpart -> . ASSIGMENT
+headpart -> . RULE
+headpart -> . OR
+ruled -> OR EXPRESSION LCURLY hp . RCURLY" shape=circle]
+	36 [label="State 36
+ruled -> OR EXPRESSION LCURLY hp RCURLY ." shape=circle]
+	35 -> 36 [label=RCURLY]
+	35 -> 26 [label=EXPRESSION]
+	35 -> 27 [label=ASSIGMENT]
+	35 -> 28 [label=RULE]
+	35 -> 29 [label=OR]
+	35 -> 34 [label=headpart]
+	32 -> 35 [label=hp]
+	32 -> 31 [label=headpart]
+	25 -> 32 [label=LCURLY]
+	20 -> 25 [label=EXPRESSION]
+	8 -> 20 [label=OR]
+	21 [label="State 21
+rule -> rule ruled ." shape=circle]
+	8 -> 21 [label=ruled]
+	5 -> 8 [label=rule]
+	0 -> 5 [label=otp]
+	6 [label="State 6
+otp -> otherpart ." shape=circle]
+	0 -> 6 [label=otherpart]
+	0 -> 7 [label=comment]
+	0 -> 8 [label=rule]
+}

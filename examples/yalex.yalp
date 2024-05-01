@@ -1,0 +1,74 @@
+/* Configuración del parser para Gramática No.1 */
+/* Sigue la gramática SLR: */
+/*  */
+
+%token RCURLY LCURLY
+%token EXPRESSION WHITESPACE
+%token ASSIGMENT RULE
+%token OR
+%token COM ENDCOM
+IGNORE WHITESPACE
+
+file:
+    otp
+;
+
+otp:
+    otp otherpart
+   | otherpart
+;
+
+otherpart:
+    rule
+  | comment
+  | ASSIGMENT
+;
+
+comment:
+    COM com ENDCOM
+  | COM ENDCOM
+;
+
+com:
+    com comm
+   | comm
+;
+
+comm:
+    EXPRESSION
+  | ASSIGMENT
+  | RULE
+  | OR
+  | RCURLY
+  | LCURLY
+;
+
+header:
+   LCURLY hp RCURLY
+;
+hp:
+   hp headpart
+  | headpart
+;
+
+headpart:
+    EXPRESSION
+  | ASSIGMENT
+  | RULE
+  | OR
+;
+
+rule:
+    rule ruled
+   | RULE EXPRESSION LCURLY hp RCURLY
+   | RULE EXPRESSION
+;
+
+ruled:
+  OR EXPRESSION
+| OR EXPRESSION LCURLY hp RCURLY
+;
+
+
+
+

@@ -26,6 +26,9 @@ def SLR_simulate(content:str, reader: 'SLR_Table'):
     actionsStack = []
 
     while True:
+        for act in actionsStack:
+            print(act[0])
+        print('-------------------')
         stateOn = stateStack[-1]
         actualToken = contentTokens[0]
         action, desc = reader.obtainAction(stateOn, actualToken)
@@ -50,7 +53,8 @@ def SLR_simulate(content:str, reader: 'SLR_Table'):
             raise Exception('Error!, not accepted')
         if action[0] == 'S':
             stateStack.append(action[1])
-            contentTokens.pop(0)
+            tokenRead = contentTokens.pop(0)
+            actionsStack.append((tokenRead, 'Shift'))
         elif action[0] == 'R':
             prod: Tuple[str, int] = action[1]
 

@@ -74,7 +74,7 @@ def exclusiveSim(initState: State, string: str):
     string += ' '
     paths: List[List[State]] = [[initState]]
     listTextTuple: List[Tuple[str, str or int]] = []
-    lastPathAccepted: List[Tuple[int, List, int]] = []
+    lastPathAccepted: List[Tuple[int, List, str]] = []
 
     chIndex = 0
     lasChIndex = 0
@@ -122,7 +122,7 @@ def exclusiveSim(initState: State, string: str):
         for path in newPaths:
             if path[-1].isFinalState:
                 newLastPathAccepted.append(
-                    (chIndex, path, sum([path[i].numberTransitions() for i in range(len(path))])))
+                    (chIndex, path, path[-1].value))
 
         if len(newLastPathAccepted) > 0:
             lastPathAccepted = sorted(newLastPathAccepted, key=lambda x: x[2])
